@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="$lang$">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  $if(description-meta)$<meta name="description" content="$description-meta$">$endif$
+  <title>$if(title)$$title$ — $endif$$sitename$</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:       #0D0D0D;
+      --surface:  #141414;
+      --border:   #1E1E1E;
+      --text:     #E2E2E2;
+      --muted:    #5A5A5A;
+      --faint:    #2A2A2A;
+      --accent:   #4A90E2;
+      --link:     #6BA3FF;
+      --link-hi:  #A5C8FF;
+      --code-bg:  #111111;
+      --f-brand:  'Caveat', cursive;
+      --f-body:   'Quicksand', sans-serif;
+      --f-mono:   'JetBrains Mono', monospace;
+      --col:      680px;
+      --t:        180ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f-body);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ::selection { background: rgba(74, 144, 226, 0.25); }
+
+    /* ── header ──────────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 13, 13, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+    }
+    .hdr {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-name {
+      font-family: var(--f-brand);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color var(--t);
+    }
+    .site-name:hover { color: var(--accent); }
+
+    nav.hdr-nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    nav.hdr-nav a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--t);
+      letter-spacing: 0.02em;
+    }
+    nav.hdr-nav a:hover { color: var(--text); }
+    nav.hdr-nav a[aria-current="page"] { color: var(--text); }
+
+    /* ── main ────────────────────────────────────────────────────── */
+    main {
+      flex: 1;
+      max-width: var(--col);
+      margin: 0 auto;
+      width: 100%;
+      padding: 3.5rem 1.5rem 6rem;
+    }
+
+    /* ── page header ─────────────────────────────────────────────── */
+    .page-hdr { margin-bottom: 3rem; }
+
+    h1.page-title {
+      font-family: var(--f-brand);
+      font-size: clamp(2rem, 5vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .page-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .page-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    /* ── page body ───────────────────────────────────────────────── */
+    .page-body { font-size: 1rem; line-height: 1.8; }
+
+    .page-body h2,
+    .page-body h3,
+    .page-body h4 {
+      font-family: var(--f-brand);
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 2em 0 0.65em;
+    }
+    .page-body h2 { font-size: 1.7rem; }
+    .page-body h3 { font-size: 1.35rem; }
+    .page-body h4 { font-size: 1.1rem; }
+
+    .page-body p { margin: 0 0 1.2em; }
+
+    .page-body a {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-color: rgba(107,163,255,0.3);
+      text-underline-offset: 3px;
+      transition: color var(--t), text-decoration-color var(--t);
+    }
+    .page-body a:hover { color: var(--link-hi); text-decoration-color: var(--link-hi); }
+
+    .page-body strong { color: var(--text); font-weight: 600; }
+
+    .page-body ul, .page-body ol { margin: 0 0 1.2em 1.4rem; padding: 0; }
+    .page-body li { margin: 0.3em 0; }
+    .page-body li > p { margin: 0; }
+
+    .page-body blockquote {
+      margin: 1.75em 0;
+      padding: 0.2em 0 0.2em 1.4rem;
+      border-left: 2px solid var(--accent);
+      color: var(--muted);
+      font-style: italic;
+    }
+    .page-body blockquote p { margin: 0; }
+
+    .page-body code {
+      font-family: var(--f-mono);
+      font-size: 0.85em;
+      background: var(--code-bg);
+      color: #CDD9E5;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .page-body pre {
+      background: var(--code-bg) !important;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .page-body pre code { background: transparent; border: none; padding: 0; font-size: inherit; color: inherit; }
+
+    .page-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      display: block;
+      margin: 1.75em auto;
+    }
+    .page-body figure { margin: 2em 0; text-align: center; }
+    .page-body figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+    .page-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5em 0; }
+
+    .page-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75em 0;
+      font-size: 0.9em;
+    }
+    .page-body th {
+      background: var(--surface);
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .page-body td { padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border); }
+    .page-body tr:last-child td { border-bottom: none; }
+
+    /* ── syntax highlighting ─────────────────────────────────────── */
+    div.sourceCode { margin: 0; }
+    pre.sourceCode { background: var(--code-bg) !important; }
+    code span.kw { color: #C792EA; }
+    code span.dt { color: #FFCB6B; }
+    code span.dv, code span.bn, code span.fl { color: #F78C6C; }
+    code span.ch, code span.st, code span.vs, code span.ss { color: #C3E88D; }
+    code span.co, code span.do, code span.an, code span.cv, code span.in { color: #546E7A; font-style: italic; }
+    code span.ot, code span.sc, code span.im, code span.op, code span.pp { color: #89DDFF; }
+    code span.fu, code span.bu, code span.ex { color: #82AAFF; }
+    code span.al, code span.er, code span.wa { color: #FF5370; }
+    code span.cn { color: #F78C6C; }
+    code span.va { color: #EEFFFF; }
+    code span.cf { color: #C792EA; }
+    code span.at { color: #FFCB6B; }
+
+    /* ── footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+    }
+    .ftr {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .ftr a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--t);
+    }
+    .ftr a:hover { color: var(--text); }
+
+    /* ── responsive ──────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      body { font-size: 17px; }
+      main { padding: 2rem 1.1rem 4rem; }
+      .hdr { padding: 0.6rem 1.1rem; }
+      .ftr { padding: 1.5rem 1.1rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+  $header-includes$
+</head>
+<body>
+  <header>
+    <div class="hdr">
+      <a href="/" class="site-name">$sitename$</a>
+      <nav class="hdr-nav" aria-label="Site navigation">
+        $if(nav)$
+        $for(nav)$<a href="$nav.href$"$if(nav.current)$ aria-current="page"$endif$>$nav.label$</a>$endfor$
+        $else$
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        $endif$
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    $include-before$
+    <div class="page-hdr">
+      $if(title)$<h1 class="page-title">$title$</h1>$endif$
+      $if(subtitle)$<p class="page-subtitle">$subtitle$</p>$endif$
+      <hr class="page-rule" aria-hidden="true">
+    </div>
+
+    <div class="page-body">
+      $body$
+    </div>
+    $include-after$
+  </main>
+
+  <footer>
+    <div class="ftr">
+      <span>© <span id="yr"></span> <a href="/">$sitename$</a></span>
+      <a href="/">← Back to home</a>
+    </div>
+  </footer>
+
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

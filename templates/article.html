@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="$lang$">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  $if(description-meta)$<meta name="description" content="$description-meta$">$endif$
+  $if(keywords)$<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$">$endif$
+  <meta property="og:type" content="article">
+  $if(title)$<meta property="og:title" content="$title$">$endif$
+  $if(description-meta)$<meta property="og:description" content="$description-meta$">$endif$
+  <title>$if(title)$$title$ — $endif$$sitename$</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:         #0D0D0D;
+      --surface:    #141414;
+      --border:     #1E1E1E;
+      --text:       #E2E2E2;
+      --muted:      #5A5A5A;
+      --faint:      #2A2A2A;
+      --accent:     #4A90E2;
+      --link:       #6BA3FF;
+      --link-hi:    #A5C8FF;
+      --code-bg:    #111111;
+      --f-brand:    'Caveat', cursive;
+      --f-body:     'Quicksand', sans-serif;
+      --f-mono:     'JetBrains Mono', monospace;
+      --col:        680px;
+      --t:          180ms;
+    }
+
+    /* ── reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f-body);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: rgba(74, 144, 226, 0.25); }
+
+    /* ── progress bar ────────────────────────────────────────────── */
+    #progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 100;
+      transition: width 80ms linear;
+    }
+
+    /* ── header ──────────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 13, 13, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+    }
+    .hdr {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-name {
+      font-family: var(--f-brand);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color var(--t);
+    }
+    .site-name:hover { color: var(--accent); }
+
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--t);
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* ── main ────────────────────────────────────────────────────── */
+    main {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 6rem;
+    }
+
+    /* ── article header ──────────────────────────────────────────── */
+    .art-hdr { margin-bottom: 2.5rem; }
+
+    h1.art-title {
+      font-family: var(--f-brand);
+      font-size: clamp(2rem, 5vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .art-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 0.8rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .art-meta .sep { color: var(--faint); }
+
+    .art-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.9rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.18rem 0.55rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      transition: border-color var(--t), color var(--t);
+      font-weight: 500;
+    }
+    .tag:hover { border-color: var(--accent); color: var(--accent); cursor: default; }
+
+    .art-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    /* ── table of contents ───────────────────────────────────────── */
+    nav#TOC {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.88rem;
+    }
+    nav#TOC::before {
+      content: 'Contents';
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+    nav#TOC ul { margin: 0; padding-left: 1.1rem; list-style: none; }
+    nav#TOC > ul { padding-left: 0; }
+    nav#TOC li { margin: 0.25rem 0; }
+    nav#TOC a { color: var(--muted); text-decoration: none; transition: color var(--t); }
+    nav#TOC a:hover { color: var(--link); }
+
+    /* ── article body ────────────────────────────────────────────── */
+    .art-body { font-size: 1rem; line-height: 1.8; }
+
+    .art-body h2,
+    .art-body h3,
+    .art-body h4 {
+      font-family: var(--f-brand);
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 2.25em 0 0.65em;
+    }
+    .art-body h2 { font-size: 1.7rem; }
+    .art-body h3 { font-size: 1.35rem; }
+    .art-body h4 { font-size: 1.1rem; }
+
+    .art-body p { margin: 0 0 1.2em; }
+
+    .art-body a {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-color: rgba(107,163,255,0.3);
+      text-underline-offset: 3px;
+      transition: color var(--t), text-decoration-color var(--t);
+    }
+    .art-body a:hover { color: var(--link-hi); text-decoration-color: var(--link-hi); }
+
+    .art-body strong { color: var(--text); font-weight: 600; }
+
+    .art-body ul, .art-body ol { margin: 0 0 1.2em 1.4rem; padding: 0; }
+    .art-body li { margin: 0.3em 0; }
+    .art-body li > p { margin: 0; }
+
+    .art-body blockquote {
+      margin: 1.75em 0;
+      padding: 0.2em 0 0.2em 1.4rem;
+      border-left: 2px solid var(--accent);
+      color: var(--muted);
+      font-style: italic;
+    }
+    .art-body blockquote p { margin: 0; }
+
+    .art-body code {
+      font-family: var(--f-mono);
+      font-size: 0.85em;
+      background: var(--code-bg);
+      color: #CDD9E5;
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .art-body pre {
+      background: var(--code-bg) !important;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .art-body pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    .art-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75em 0;
+      font-size: 0.9em;
+    }
+    .art-body th {
+      background: var(--surface);
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .art-body td {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .art-body tr:last-child td { border-bottom: none; }
+
+    .art-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      display: block;
+      margin: 1.75em auto;
+    }
+    .art-body figure { margin: 2em 0; text-align: center; }
+    .art-body figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+    .art-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5em 0; }
+
+    .art-body .footnotes {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    /* ── syntax highlighting ─────────────────────────────────────── */
+    div.sourceCode { margin: 0; }
+    pre.sourceCode { background: var(--code-bg) !important; }
+    code span.kw { color: #C792EA; }
+    code span.dt { color: #FFCB6B; }
+    code span.dv, code span.bn, code span.fl { color: #F78C6C; }
+    code span.ch, code span.st, code span.vs, code span.ss { color: #C3E88D; }
+    code span.co, code span.do, code span.an, code span.cv, code span.in { color: #546E7A; font-style: italic; }
+    code span.ot, code span.sc, code span.im, code span.op, code span.pp { color: #89DDFF; }
+    code span.fu, code span.bu, code span.ex { color: #82AAFF; }
+    code span.al, code span.er, code span.wa { color: #FF5370; }
+    code span.cn { color: #F78C6C; }
+    code span.va { color: #EEFFFF; }
+    code span.cf { color: #C792EA; }
+    code span.at { color: #FFCB6B; }
+
+    /* ── footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+    }
+    .ftr {
+      max-width: var(--col);
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .ftr a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--t);
+    }
+    .ftr a:hover { color: var(--text); }
+
+    /* ── responsive ──────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      body { font-size: 17px; }
+      main { padding: 2rem 1.1rem 4rem; }
+      .hdr { padding: 0.6rem 1.1rem; }
+      .ftr { padding: 1.5rem 1.1rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    /* ── reduced motion ──────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+      #progress { transition: none; }
+    }
+  </style>
+  $header-includes$
+</head>
+<body>
+  <div id="progress" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+  <header>
+    <div class="hdr">
+      <a href="/" class="site-name">$sitename$</a>
+      <a href="/" class="back-link" aria-label="Back to all posts">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        All posts
+      </a>
+    </div>
+  </header>
+
+  <main>
+    $include-before$
+    <article>
+      <header class="art-hdr">
+        $if(title)$<h1 class="art-title">$title$</h1>$endif$
+
+        <div class="art-meta">
+          $if(author)$<span>$for(author)$$author$$sep$ &amp; $endfor$</span>$endif$
+          $if(author)$$if(date)$<span class="sep">·</span>$endif$$endif$
+          $if(date)$<time datetime="$date$">$date$</time>$endif$
+          <span class="sep">·</span>
+          <span id="rt"></span>
+        </div>
+
+        $if(keywords)$
+        <div class="art-tags" aria-label="Tags">
+          $for(keywords)$<span class="tag">$keywords$</span>$endfor$
+        </div>
+        $endif$
+
+        <hr class="art-rule" aria-hidden="true">
+      </header>
+
+      $if(abstract)$
+      <p style="color:var(--muted);font-style:italic;margin-bottom:2rem">$abstract$</p>
+      <hr class="art-rule" aria-hidden="true">
+      $endif$
+
+      $if(toc)$
+      <nav id="TOC" aria-label="Table of contents">$toc$</nav>
+      $endif$
+
+      <div class="art-body">$body$</div>
+    </article>
+    $include-after$
+  </main>
+
+  <footer>
+    <div class="ftr">
+      <span>© <span id="yr"></span> <a href="/">$sitename$</a></span>
+      <a href="/">← Back to home</a>
+    </div>
+  </footer>
+
+  <script>
+    // Reading progress
+    const prog = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      prog.style.width = Math.min(100, h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    }, { passive: true });
+
+    // Reading time
+    const body = document.querySelector('.art-body');
+    const rt = document.getElementById('rt');
+    if (body && rt) {
+      const mins = Math.max(1, Math.round(body.innerText.trim().split(/\s+/).length / 200));
+      rt.textContent = mins + ' min read';
+    }
+
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
