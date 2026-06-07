@@ -1,6 +1,6 @@
 # ── site metadata ────────────────────────────────────────────────
-sitename := "Matt's blog"
-author   := "Matt"
+sitename := "Matúšov blog"
+author   := "Matúš"
 lang     := "sk"
 base-url := "https://example.com"
 # ─────────────────────────────────────────────────────────────────
@@ -64,9 +64,9 @@ build-home: _meta
     declare -A posts
     for f in posts/*.md; do
         [ -f "$f" ] || continue
-        title=$({{pandoc}} --template=<(echo '$title$') "$f" 2>/dev/null | tr -d '\n')
-        date=$({{pandoc}} --template=<(echo '$date$') "$f" 2>/dev/null | tr -d '\n')
-        desc=$({{pandoc}} --template=<(echo '$if(description-meta)$$description-meta$$endif$') "$f" 2>/dev/null | tr -d '\n')
+        title=$(grep -m1 '^title:' "$f" | sed 's/^title:[[:space:]]*//' | tr -d '"' | tr -d '\n')
+        date=$(grep -m1 '^date:' "$f" | sed 's/^date:[[:space:]]*//' | tr -d '"' | tr -d '\n')
+        desc=$(grep -m1 '^description:' "$f" | sed 's/^description:[[:space:]]*//' | tr -d '"' | tr -d '\n')
         name=$(basename "$f" .md)
         key="${date}_${name}"
         posts["$key"]="$title|$date|$desc|$name"
