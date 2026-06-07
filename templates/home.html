@@ -26,6 +26,8 @@
       --f-brand:  'Caveat', cursive;
       --f-body:   'Quicksand', sans-serif;
       --col:      760px;
+      --sidebar:  210px;
+      --layout:   1010px;
       --t:        180ms;
     }
 
@@ -52,7 +54,7 @@
       border-bottom: 1px solid var(--border);
     }
     .hdr {
-      max-width: var(--col);
+      max-width: var(--layout);
       margin: 0 auto;
       padding: 1rem 1.5rem;
       display: flex;
@@ -85,11 +87,100 @@
     }
     nav.hdr-nav a:hover { color: var(--text); }
 
+    /* ── page layout ─────────────────────────────────────────────── */
+    .page-wrap {
+      display: flex;
+      gap: 2.5rem;
+      max-width: var(--layout);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    /* ── sidebar ─────────────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar);
+      flex-shrink: 0;
+      position: sticky;
+      top: 2rem;
+      padding-top: 2.5rem;
+    }
+
+    .sb-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .sb-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .sb-name {
+      font-family: var(--f-brand);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.1rem;
+    }
+
+    .sb-loc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .sb-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .sb-link {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--t);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .sb-link:hover { color: var(--link); }
+
+    .sb-gear {
+      font-size: 0.78rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.25rem 0.6rem;
+    }
+    .sb-gear dt {
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .sb-gear dd {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .sb-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 1.75rem;
+    }
+
+    /* ── page content (hero + main) ──────────────────────────────── */
+    .page-content {
+      flex: 1;
+      min-width: 0;
+    }
+
     /* ── hero ────────────────────────────────────────────────────── */
     .hero {
-      max-width: var(--col);
-      margin: 0 auto;
-      padding: 5rem 1.5rem 4rem;
+      padding: 5rem 0 4rem;
       border-bottom: 1px solid var(--border);
     }
     .hero-name {
@@ -126,11 +217,7 @@
 
     /* ── main ────────────────────────────────────────────────────── */
     main {
-      flex: 1;
-      max-width: var(--col);
-      margin: 0 auto;
-      width: 100%;
-      padding: 3rem 1.5rem 5rem;
+      padding: 3rem 0 5rem;
     }
 
     /* ── post list ───────────────────────────────────────────────── */
@@ -238,7 +325,7 @@
       border-top: 1px solid var(--border);
     }
     .ftr {
-      max-width: var(--col);
+      max-width: var(--layout);
       margin: 0 auto;
       padding: 1.5rem;
       display: flex;
@@ -256,9 +343,13 @@
     .ftr a:hover { color: var(--text); }
 
     /* ── responsive ──────────────────────────────────────────────── */
-    @media (max-width: 640px) {
+    @media (max-width: 860px) {
+      .sidebar { display: none; }
+      .page-wrap { padding: 0; }
       .hero { padding: 3.5rem 1.1rem 3rem; }
       main { padding: 2.5rem 1.1rem 4rem; }
+    }
+    @media (max-width: 640px) {
       .hdr { padding: 0.9rem 1.1rem; }
       .post-item { grid-template-columns: 1fr; }
       .post-date { grid-row: 2; grid-column: 1; margin-top: 0.2rem; }
@@ -286,26 +377,76 @@
     </div>
   </header>
 
-  <div class="hero">
-    <h1 class="hero-name">$sitename$</h1>
-    $if(subtitle)$<p class="hero-tagline">$subtitle$</p>$endif$
-    $if(hero-links)$
-    <div class="hero-links">
-      $for(hero-links)$
-      <a href="$hero-links.href$" aria-label="$hero-links.label$">
-        $if(hero-links.icon)$$hero-links.icon$$endif$
-        $hero-links.label$
-      </a>
-      $endfor$
-    </div>
-    $endif$
-  </div>
+  <div class="page-wrap">
+    <aside class="sidebar" aria-label="O autorovi">
 
-  <main>
-    <div class="home-body">
-      $body$
+      <section class="sb-section">
+        <h2 class="sb-label">O mne</h2>
+        <p class="sb-name">Matúš</p>
+        <p class="sb-loc">Bratislava, Slovakia</p>
+        <div class="sb-links">
+          <a href="https://www.blogger.com/profile/07456090721027786711" class="sb-link" target="_blank" rel="noopener noreferrer">Profil →</a>
+        </div>
+      </section>
+
+      <hr class="sb-divider" aria-hidden="true">
+
+      <section class="sb-section">
+        <h2 class="sb-label">Referral links</h2>
+        <div class="sb-links">
+          <a href="https://pr.tn/ref/Q10XGT5C9DCG" class="sb-link" target="_blank" rel="noopener noreferrer">Proton</a>
+          <a href="https://wise.com/invite/dic/matusm159" class="sb-link" target="_blank" rel="noopener noreferrer">Wise <span style="font-size:0.72rem">(18+)</span></a>
+        </div>
+      </section>
+
+      <hr class="sb-divider" aria-hidden="true">
+
+      <section class="sb-section">
+        <h2 class="sb-label">Veci, ktoré používam</h2>
+        <dl class="sb-gear">
+          <dt>OS</dt><dd>Fedora / MacOS</dd>
+          <dt>PC</dt><dd>R5 3600, GTX 1660s, 32GB</dd>
+          <dt>Mobil</dt><dd>Galaxy A53 5G</dd>
+        </dl>
+      </section>
+
+      <hr class="sb-divider" aria-hidden="true">
+
+      <section class="sb-section">
+        <h2 class="sb-label">Profily</h2>
+        <div class="sb-links">
+          <a href="https://gitlab.com/TenTypekMatus" class="sb-link" target="_blank" rel="noopener noreferrer">GitLab</a>
+          <a href="https://www.linkedin.com/in/dasmatus/" class="sb-link" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://mastodon.social/@dasmatus" class="sb-link" target="_blank" rel="noopener noreferrer">Mastodon</a>
+        </div>
+      </section>
+
+    </aside>
+
+    <div class="page-content">
+      <div class="hero">
+        <h1 class="hero-name">$sitename$</h1>
+        $if(subtitle)$<p class="hero-tagline">$subtitle$</p>$endif$
+        $if(hero-links)$
+        <div class="hero-links">
+          $for(hero-links)$
+          <a href="$hero-links.href$" aria-label="$hero-links.label$">
+            $if(hero-links.icon)$$hero-links.icon$$endif$
+            $hero-links.label$
+          </a>
+          $endfor$
+        </div>
+        $endif$
+      </div>
+
+      <main>
+        <div class="home-body">
+          $body$
+        </div>
+      </main>
     </div>
-  </main>
+
+  </div>
 
   <footer>
     <div class="ftr">
