@@ -3,3 +3,4 @@ output/
 .DS_Store
 .vercel
 .metadata.yaml
+node_modules/
