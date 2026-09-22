@@ -2,6 +2,11 @@
 title: "Editor review: Zed"
 date: "2026-01-27"
 author: "Matt"
+keywords:
+  - zed
+  - editor
+  - review
+  - linux
 ---
 
 Každý, kto používa počítač, asi použil niekedy nejaký textový editor. Či už je to Poznámkový blok, Word, LibreOffice Writer alebo pre nás programátorov Visual Studio Code, editory od JetBrains, Neovim alebo aj Zed.

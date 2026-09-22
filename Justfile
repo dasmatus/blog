@@ -2,7 +2,7 @@
 sitename := "Matúšov blog"
 author   := "Matúš"
 lang     := "sk"
-base-url := "https://example.com"
+base-url := "https://dasmat.us"
 # ─────────────────────────────────────────────────────────────────
 
 out    := "output"
