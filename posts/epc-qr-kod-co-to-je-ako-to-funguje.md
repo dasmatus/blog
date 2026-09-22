@@ -2,6 +2,11 @@
 title: "EPC QR kód: čo to je, ako to funguje a porovnanie s WeChat/Apple/Google Pay a s platobnými kartami"
 date: "2026-02-11"
 author: "Matt"
+keywords:
+  - epc qr
+  - platby
+  - sepa
+  - fintech
 ---
 
 Nedávno som v správach pozeral reportáž o tom, ako jedna bratislavská pekáreň zaviedla platby QR kódom. Som si hovoril v hlave, že WeChat Pay prišiel do naších končín. Ale naštastie neprišiel. Je to úplne iná technológia ako majú v Číne, ktorá nie je závislá na jednej superaplikácií, plus nie je spravovaná akciovou spoločnosťou, ktorá je (podľa mňa) v podstate predĺženou rukou Čínskej komunistickej strany. A nie, nie je to ani Pay by square (pre mojich zahraničných čitateľov - nie, nie je to vlastnené tou americkou spoločnosťou, ktorá vlastní Cash App, je to podľa mňa blbo pomenovaný slovenský \"vynález\", ktorým sa dá tu v podstate zaplatiť všetko, dokonca aj obedy v EduPage).

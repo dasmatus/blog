@@ -1,6 +1,6 @@
 {
   "name": "blog",
-  "module": "index.ts",
+  "module": "build.ts",
   "type": "module",
   "private": true,
   "scripts": {

@@ -2,6 +2,10 @@
 title: "Čo sa stalo s MatuushOS a čo ďalej?"
 date: "2026-01-27"
 author: "Matt"
+keywords:
+  - matuushos
+  - mtos
+  - status update
 ---
 
 Ako ste si možno mohli všimnúť pri predošlých článkoch, tak prestali fungovať odkazy na GitLabovú stránku MatuushOS. Je to preto, lebo som nebol spokojný s technickou zadĺženosťou a expanziou rozsahu tohto projektu.

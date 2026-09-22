@@ -2,7 +2,7 @@
 title: "Ako mi Claude Code pomohol zmigrovať všetky články z Bloggeru sem"
 date: "2026-06-07"
 author: "Matúš"
-tags:
+keywords:
   - claude
   - migracia
   - blogger
