@@ -1,47 +1,20 @@
-import { $, spawn } from "bun";
+import { $ } from "bun";
+import { existsSync } from "fs";
 import { join } from "path";
 
-const PANDOC_VERSION = "3.2.1";
-const JUST_VERSION = "1.36.0";
-const HOME = process.env.HOME ?? "/root";
-const BIN_DIR = join(HOME, ".local", "bin");
+// pandoc and just are installed from the npm registry (see package.json), so the
+// build never downloads release archives from github.com at build time.
+const BIN_DIR = join(import.meta.dir, "node_modules", ".bin");
+
+if (!existsSync(join(BIN_DIR, "pandoc")) || !existsSync(join(BIN_DIR, "just"))) {
+  throw new Error(
+    `pandoc/just not found in ${BIN_DIR}. Run \`bun install\` before building.`,
+  );
+}
 
 $.env({ ...process.env, PATH: `${BIN_DIR}:${process.env.PATH}` });
 
-async function download(url: string, dest: string): Promise<void> {
-  console.log(`  Downloading ${url}`);
-  const res = await fetch(url, { redirect: "follow" });
-  if (!res.ok) throw new Error(`HTTP ${res.status} downloading ${url}`);
-  await Bun.write(dest, res);
-}
-
-await $`mkdir -p ${BIN_DIR}`;
-
-if ((await $`which pandoc`.nothrow().quiet()).exitCode !== 0) {
-  console.log(`Installing pandoc ${PANDOC_VERSION}...`);
-  const archive = `/tmp/pandoc-${PANDOC_VERSION}.tar.gz`;
-  await download(
-    `https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz`,
-    archive,
-  );
-  await $`tar xzf ${archive} --strip-components=2 -C ${BIN_DIR} pandoc-${PANDOC_VERSION}/bin/pandoc`;
-  await $`rm ${archive}`;
-}
-
-if ((await $`which just`.nothrow().quiet()).exitCode !== 0) {
-  console.log(`Installing just ${JUST_VERSION}...`);
-  const archive = `/tmp/just-${JUST_VERSION}.tar.gz`;
-  await download(
-    `https://github.com/casey/just/releases/download/${JUST_VERSION}/just-${JUST_VERSION}-x86_64-unknown-linux-musl.tar.gz`,
-    archive,
-  );
-  await $`tar xzf ${archive} -C ${BIN_DIR} just`;
-  await $`rm ${archive}`;
-}
-
-const pandocVer = (await $`pandoc --version`.text()).split("\n")[0];
-const justVer = (await $`just --version`.text()).trim();
-console.log(`pandoc ${pandocVer}`);
-console.log(`just   ${justVer}`);
+console.log(`pandoc ${(await $`pandoc --version`.text()).split("\n")[0]}`);
+console.log(`just   ${(await $`just --version`.text()).trim()}`);
 
 await $`just build`;

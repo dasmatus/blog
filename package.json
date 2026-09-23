@@ -6,6 +6,10 @@
   "scripts": {
     "build": "bun run build.ts"
   },
+  "dependencies": {
+    "@maple3142/pandoc-bin-linux-amd64": "3.6.2",
+    "rust-just": "1.57.0"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
