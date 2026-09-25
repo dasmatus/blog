@@ -1,0 +1,15 @@
+name: CI Babysitter Probe
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trivial step with no external action
+        run: echo "probe ok"
